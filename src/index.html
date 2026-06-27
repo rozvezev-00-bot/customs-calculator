@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор растаможки - таможенные платежи при ввозе авто в Россию</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="header__inner">
+      <span class="header__logo">Экспорт Авто Китай</span>
+      <span class="header__tagline">Калькулятор растаможки</span>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="hero">
+      <h1>Рассчитайте таможенные платежи при ввозе автомобиля в Россию</h1>
+      <p class="hero__subtitle">Для физических и юридических лиц. Заполните форму и получите ориентировочную разбивку: пошлина, акциз, НДС, утилизационный сбор и итого к оплате на таможне. Расчёт ориентировочный - точные суммы зависят от курса ЦБ на дату декларирования.</p>
+    </section>
+
+    <div class="calculator-layout">
+
+      <section id="calculator">
+
+        <div class="personal-use-row">
+          <label>
+            <input type="checkbox" id="input-personal-use" checked>
+            Для личного пользования
+          </label>
+          <span class="field-hint">Снимите галочку, если ввозите для юридического лица или перепродажи. Для физлиц с мощностью до 160 л.с. (ДВС) или 80 л.с. (электро) и объёмом до 3 000 куб.см применяется льготный утилизационный сбор 3 400 или 5 200 руб.</span>
+        </div>
+
+        <form id="calc-form">
+
+          <div class="field-group">
+            <label for="input-country">Страна происхождения</label>
+            <select id="input-country">
+              <option value="CN" selected>Китай</option>
+              <option value="JP">Япония</option>
+              <option value="KR">Корея</option>
+              <option value="DE">Германия / Европа</option>
+              <option value="US">США</option>
+              <option value="AE">ОАЭ</option>
+              <option value="BY">Беларусь (ЕАЭС)</option>
+              <option value="KZ">Казахстан (ЕАЭС)</option>
+              <option value="AM">Армения (ЕАЭС)</option>
+              <option value="KG">Кыргызстан (ЕАЭС)</option>
+            </select>
+            <span class="field-hint">Для стран ЕАЭС таможенная пошлина = 0.</span>
+          </div>
+
+          <div class="field-group">
+            <label>Возраст автомобиля</label>
+            <div class="option-toggle" id="age-toggle">
+              <button type="button" class="option-toggle__btn" data-age="new">До 3 лет</button>
+              <button type="button" class="option-toggle__btn option-toggle__btn--active" data-age="mid">3-5 лет</button>
+              <button type="button" class="option-toggle__btn" data-age="old">Старше 5 лет</button>
+            </div>
+            <input type="hidden" id="input-year">
+          </div>
+
+          <div class="field-group">
+            <label>Тип двигателя</label>
+            <div class="option-toggle" id="engine-toggle">
+              <button type="button" class="option-toggle__btn option-toggle__btn--active" data-engine="gasoline">Бензин или дизель</button>
+              <button type="button" class="option-toggle__btn" data-engine="electric">Электро</button>
+            </div>
+            <select id="input-engine-type" style="display:none;">
+              <option value="gasoline" selected>Бензин</option>
+              <option value="diesel">Дизель</option>
+              <option value="hybrid_parallel">Гибрид (параллельный / PHEV)</option>
+              <option value="hybrid_sequential">Гибрид (последовательный / EREV)</option>
+              <option value="electric">Электромобиль</option>
+            </select>
+            <span class="field-hint">Для расчёта последовательных гибридов выбирайте «Электро», для остальных - «Бензин или дизель».</span>
+          </div>
+
+          <div class="field-group" id="field-engine-cc">
+            <label for="input-engine-cc">Объём двигателя</label>
+            <div class="input-with-unit">
+              <input type="number" id="input-engine-cc" min="0" placeholder="например, 1500">
+              <span class="unit">куб.см</span>
+            </div>
+            <span class="field-hint">Не указывается для электромобилей - поле скрывается автоматически.</span>
+          </div>
+
+          <div class="field-group">
+            <label for="input-power-hp">Мощность двигателя</label>
+            <div class="input-with-unit">
+              <input type="number" id="input-power-hp" min="0" placeholder="например, 130">
+              <span class="unit">л.с.</span>
+            </div>
+            <span class="field-hint" id="hint-power-hp">Используется для расчёта акциза (юрлица) и утилизационного сбора.</span>
+          </div>
+
+          <div class="field-group">
+            <label for="input-value">Таможенная стоимость</label>
+            <input type="number" id="input-value" min="0" placeholder="например, 200000">
+            <span class="field-hint">Цена покупки автомобиля у продавца. Не путать с рыночной ценой в России - таможня принимает фактическую стоимость по контракту или инвойсу.</span>
+          </div>
+
+          <div class="field-group">
+            <label for="input-currency">Валюта</label>
+            <select id="input-currency">
+              <option value="CNY" selected>¥ Юань (CNY)</option>
+              <option value="USD">$ Доллар (USD)</option>
+              <option value="EUR">€ Евро (EUR)</option>
+              <option value="RUB">₽ Рубль (RUB)</option>
+              <option value="JPY">¥ Иена (JPY)</option>
+              <option value="KRW">₩ Вона (KRW)</option>
+              <option value="AED">دإ Дирхам (AED)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="input-rate-eur">Курс EUR/RUB</label>
+            <input type="number" id="input-rate-eur" step="0.01" placeholder="87.40">
+            <span class="field-hint">Ставки ЕТП исчисляются в EUR и конвертируются по этому курсу. Дефолт - значение ЦБ РФ на 28.06.2026. Измените если нужен другой курс.</span>
+          </div>
+
+          <div class="field-group" id="field-rate-currency" style="display:none;">
+            <label for="input-rate-currency" id="label-rate-currency">Курс CNY/RUB</label>
+            <input type="number" id="input-rate-currency" step="0.001" placeholder="11.5">
+          </div>
+
+          <button type="submit" id="btn-calculate">Рассчитать</button>
+
+        </form>
+
+        <div id="calc-error" style="display:none;"></div>
+
+        <div id="calc-result" style="display:none;">
+          <h2 class="result-heading">Результат расчёта</h2>
+
+          <div class="result-row individual-only" id="row-etp">
+            <span class="result-row__label">ЕТП</span>
+            <span class="result-row__amount" id="val-etp">-</span>
+          </div>
+
+          <div class="result-row legal-only" id="row-duty">
+            <span class="result-row__label">Таможенная пошлина</span>
+            <span class="result-row__amount" id="val-duty">-</span>
+          </div>
+          <div class="result-row legal-only" id="row-excise">
+            <span class="result-row__label">Акциз</span>
+            <span class="result-row__amount" id="val-excise">-</span>
+          </div>
+          <div class="result-row legal-only" id="row-vat">
+            <span class="result-row__label">НДС (20%)</span>
+            <span class="result-row__amount" id="val-vat">-</span>
+          </div>
+          <div class="result-row legal-only" id="row-customs-fee">
+            <span class="result-row__label">Сбор за оформление</span>
+            <span class="result-row__amount" id="val-customs-fee">-</span>
+          </div>
+
+          <div class="result-row" id="row-recycling">
+            <span class="result-row__label">Утилизационный сбор</span>
+            <span class="result-row__amount" id="val-recycling">-</span>
+          </div>
+
+          <div class="result-row result-row--subtotal" id="row-total-customs">
+            <span class="result-row__label">Итого на таможне</span>
+            <span class="result-row__amount" id="val-total-customs">-</span>
+          </div>
+
+          <div class="result-row" id="row-car-value">
+            <span class="result-row__label">Стоимость авто</span>
+            <span class="result-row__amount" id="val-car-value">-</span>
+          </div>
+
+          <div class="result-row result-row--total" id="row-total-cost">
+            <span class="result-row__label">Полная стоимость</span>
+            <span class="result-row__amount" id="val-total-cost">-</span>
+          </div>
+
+          <div class="extra-costs">
+            <h3 class="extra-costs__heading">Дополнительные обязательные расходы</h3>
+            <p class="extra-costs__subheading">Не включены в расчёт таможни, но обязательны при ввозе</p>
+            <div class="result-row" id="row-extra-era">
+              <span class="result-row__label">ЭРА-ГЛОНАСС</span>
+              <span class="result-row__amount">от 17 000 до 40 000 руб.</span>
+            </div>
+            <div class="result-row" id="row-extra-sbkts">
+              <span class="result-row__label">СБКТС (сертификация)</span>
+              <span class="result-row__amount">от 14 000 до 30 000 руб.</span>
+            </div>
+            <div class="result-row" id="row-extra-svh">
+              <span class="result-row__label">СВХ (склад временного хранения)</span>
+              <span class="result-row__amount">1 000 - 3 000 руб./сутки</span>
+            </div>
+            <div class="result-row" id="row-extra-broker">
+              <span class="result-row__label">Таможенный брокер</span>
+              <span class="result-row__amount">от 15 000 до 50 000 руб.</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="ai-chat">
+        <h2>Рассчитать через чат</h2>
+        <p class="ai-chat__subtitle">Опишите автомобиль текстом - ассистент задаст уточняющие вопросы и рассчитает платежи без заполнения формы.</p>
+        <div id="chat-messages"></div>
+        <form id="chat-form">
+          <textarea
+            id="chat-input"
+            placeholder="Опишите авто которое хотите ввезти. Например: BYD Han EV 2022 года, хочу пригнать из Китая, я физлицо"
+            rows="2"
+          ></textarea>
+          <button type="submit" id="btn-chat-send">Отправить</button>
+        </form>
+      </section>
+
+    </div>
+
+    <section id="cta">
+      <h2 class="cta__heading">Хотите ввезти авто из Китая?</h2>
+      <p class="cta__subheading">Работаем из Циндао: поиск, диагностика, сопровождение сделки до СВХ. Комиссия фиксированная - 6 000-8 000 юаней за авто. Проходные расходы (логистика, документы, страховка - около 5 900 юаней) клиент платит отдельно сверх комиссии.</p>
+      <a href="#" class="cta__btn">Обсудить ввоз</a>
+      <p class="cta__note">Работаем с дилерами от 1 авто</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p class="footer__disclaimer">Расчёт является ориентировочным. Точные суммы зависят от официального курса ЦБ РФ на дату декларирования, таможенной стоимости, принятой таможенным органом, и актуальных ставок законодательства. Ставки актуальны на 28 июня 2026. При изменении законодательства данные обновляются.</p>
+  </footer>
+
+  <script src="data/defaults.js"></script>
+  <script src="calculator.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
